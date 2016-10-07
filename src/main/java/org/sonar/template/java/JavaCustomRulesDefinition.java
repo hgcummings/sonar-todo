@@ -4,7 +4,7 @@ import com.google.common.collect.Iterables;
 
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
-import org.sonar.plugins.java.Java;
+//import org.sonar.plugins.java.Java; //TODO: Check why this is broken
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class JavaCustomRulesDefinition implements RulesDefinition {
 
   @Override
   public void define(Context context) {
-    NewRepository repository = context.createRepository(REPOSITORY_KEY, Java.KEY);
+    NewRepository repository = context.createRepository(REPOSITORY_KEY, "Java"); // TODO, use Java.KEY
     repository.setName("Java Custom Rules - Template");
 
     List<Class> checks = JavaCustomRulesList.getChecks();
