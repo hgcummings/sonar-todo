@@ -9,6 +9,7 @@ public class MyClass {
      * TODO: Implement this 22222
      */
     public void mySecondMethod() {
+        // Noncompliant@+1
         //TODO:PROJ-222 Implement this
     }
 
@@ -21,11 +22,20 @@ public class MyClass {
         //TODO:PROJ-333 Implement this
     }
 
+    // Noncompliant@+1
     /**
      * TODO:PROJ-444 Implement this
      */
     public void myFourthMethod() {
         // Noncompliant@+1
         // Still a bit more todo here
+    }
+
+    /**
+     * TODO:PROJ-555 Implement this
+     */
+    public void myFourthMethod() {
+        // Noncompliant@+1
+        //TODO: Implement this under PROJ-777
     }
 }
