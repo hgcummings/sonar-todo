@@ -1,5 +1,5 @@
 @ParametersAreNonnullByDefault
-package org.sonar.template.java.checks;
+package io.hgc.sonar.java.checks;
 
 /**
  * This package contains the custom rules

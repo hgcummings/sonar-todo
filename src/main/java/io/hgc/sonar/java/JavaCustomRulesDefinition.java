@@ -1,4 +1,4 @@
-package org.sonar.template.java;
+package io.hgc.sonar.java;
 
 import com.google.common.collect.Iterables;
 
@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class JavaCustomRulesDefinition implements RulesDefinition {
 
-  public static final String REPOSITORY_KEY = "java-custom-rules-template";
+  public static final String REPOSITORY_KEY = "java-custom-rules-todo-issues";
 
   @Override
   public void define(Context context) {
-    NewRepository repository = context.createRepository(REPOSITORY_KEY, "Java"); // TODO, use Java.KEY
-    repository.setName("Java Custom Rules - Template");
+    NewRepository repository = context.createRepository(REPOSITORY_KEY, "java"); // TODO, use Java.KEY
+    repository.setName("Java Custom Rules - TODO Issues");
 
     List<Class> checks = JavaCustomRulesList.getChecks();
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(checks, Class.class));

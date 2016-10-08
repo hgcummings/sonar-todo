@@ -1,4 +1,4 @@
-package org.sonar.template.java.issues;
+package io.hgc.sonar.java.issues;
 
 import java.util.regex.Pattern;
 

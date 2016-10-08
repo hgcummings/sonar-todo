@@ -3,8 +3,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.sonar.samples</groupId>
-  <artifactId>java-custom-rules-template</artifactId>
+  <groupId>io.hgc</groupId>
+  <artifactId>java-custom-rule-todo-issue</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
@@ -13,8 +13,8 @@
     <java.plugin.version>3.13.1</java.plugin.version>
   </properties>
 
-  <name>Java Custom Rules - Template</name>
-  <description>Empty template for custom rules</description>
+  <name>Java Custom Rules - Active issue TODOs</name>
+  <description>Custom Sonar rule for checking TODOs against active issues</description>
 
   <repositories>
     <repository>
@@ -24,6 +24,13 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.3</version>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
@@ -110,7 +117,7 @@
         <version>1.15</version>
         <extensions>true</extensions>
         <configuration>
-          <pluginClass>org.sonar.template.java.JavaCustomRulesPlugin</pluginClass>
+          <pluginClass>io.hgc.sonar.java.JavaCustomRulesPlugin</pluginClass>
         </configuration>
       </plugin>
 
@@ -119,8 +126,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 

@@ -1,7 +1,8 @@
-package org.sonar.template.java;
+package io.hgc.sonar.java;
 
 import com.google.common.collect.ImmutableList;
 
+import io.hgc.sonar.java.checks.TodoIssueCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
 import java.util.List;
@@ -17,13 +18,12 @@ public final class JavaCustomRulesList {
 
   public static List<Class<? extends JavaCheck>> getJavaChecks() {
     return ImmutableList.<Class<? extends JavaCheck>>builder()
-      // add HERE rules targeting source files
+      .add(TodoIssueCheck.class)
       .build();
   }
 
   public static List<Class<? extends JavaCheck>> getJavaTestChecks() {
     return ImmutableList.<Class<? extends JavaCheck>>builder()
-      // add HERE rules targeting test files
       .build();
   }
 }

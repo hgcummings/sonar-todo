@@ -1,11 +1,12 @@
-package org.sonar.template.java;
+package io.hgc.sonar.java;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.java.checks.verifier.JavaCheckVerifier;
-import org.sonar.template.java.issues.Issue;
-import org.sonar.template.java.issues.IssueChecker;
-import org.sonar.template.java.issues.JiraIssueChecker;
+import io.hgc.sonar.java.checks.TodoIssueCheck;
+import io.hgc.sonar.java.issues.Issue;
+import io.hgc.sonar.java.issues.IssueChecker;
+import io.hgc.sonar.java.issues.JiraIssueChecker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,19 +14,13 @@ import java.util.Map;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TodoCheckTest {
+public class TodoIssueCheckTest {
     private IssueChecker stubIssueChecker;
 
     @Before
     public void setup() {
         final Map<String, Issue> stubIssueData = new HashMap<>();
-
-        stubIssueChecker = new JiraIssueChecker() {
-            @Override
-            public Issue lookupIssue(String issueId) {
-                return stubIssueData.get(issueId);
-            }
-        };
+        stubIssueChecker = (JiraIssueChecker) stubIssueData::get;
 
         Issue openIssue = mock(Issue.class);
         Issue closedIssue = mock(Issue.class);
@@ -40,6 +35,6 @@ public class TodoCheckTest {
 
     @Test
     public void test() {
-        JavaCheckVerifier.verify("src/test/files/TodoCheck.java", new TodoCheck(stubIssueChecker));
+        JavaCheckVerifier.verify("src/test/files/TodoCheck.java", new TodoIssueCheck(stubIssueChecker));
     }
 }

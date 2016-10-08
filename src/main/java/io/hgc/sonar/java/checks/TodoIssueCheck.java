@@ -1,28 +1,37 @@
-package org.sonar.template.java;
+package io.hgc.sonar.java.checks;
 
 import com.google.common.collect.ImmutableList;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
 import org.sonar.plugins.java.api.tree.SyntaxTrivia;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
-import org.sonar.template.java.issues.DisconnectedJiraIssueChecker;
-import org.sonar.template.java.issues.IssueChecker;
+import io.hgc.sonar.java.issues.DisconnectedJiraIssueChecker;
+import io.hgc.sonar.java.issues.IssueChecker;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TodoCheck extends IssuableSubscriptionVisitor {
+@Rule(
+    key = "TodoIssueCheck",
+    name = "All TODOs should be associated with open issues",
+    description = "Every TODO should reference an open issue under which that TODO will be closed",
+    priority = Priority.MAJOR,
+    tags = {"tech-debt"}
+)
+public class TodoIssueCheck extends IssuableSubscriptionVisitor {
 
     private static final Pattern todoRegex = Pattern.compile("TO-?DO", Pattern.CASE_INSENSITIVE);
 
     private IssueChecker issueChecker;
 
-    public TodoCheck() {
+    public TodoIssueCheck() {
         this(new DisconnectedJiraIssueChecker());
     }
 
     //TODO: Work out how to initialise this within Sonar
-    public TodoCheck(IssueChecker issueChecker) {
+    public TodoIssueCheck(IssueChecker issueChecker) {
         this.issueChecker = issueChecker;
     }
 

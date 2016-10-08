@@ -1,4 +1,4 @@
-package org.sonar.template.java;
+package io.hgc.sonar.java;
 
 import org.sonar.api.SonarPlugin;
 
