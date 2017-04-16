@@ -56,10 +56,8 @@ public class TodoIssueCheck extends IssuableSubscriptionVisitor {
             if (issueMatcher.find(todoMatcher.end()) && issueMatcher.start() == todoMatcher.end() + 1) {
                 String issueId = issueMatcher.group();
                 Optional<Issue> foundIssue = issueChecker.lookupIssue(issueId);
-                if (foundIssue.isPresent()) {
-                    if (!foundIssue.get().isOpen()) {
-                        addIssue(trivia.startLine(), "Found TODO associated closed issue " + issueId);
-                    }
+                if (foundIssue.isPresent() && !foundIssue.get().isOpen()) {
+                    addIssue(trivia.startLine(), "Found TODO associated closed issue " + issueId);
                 }
             } else {
                 addIssue(trivia.startLine(), "Found TODO without associated issue");
