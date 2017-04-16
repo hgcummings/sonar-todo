@@ -10,6 +10,7 @@ import io.hgc.sonar.java.issues.JiraIssueChecker;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -19,18 +20,20 @@ public class TodoIssueCheckTest {
 
     @Before
     public void setup() {
-        final Map<String, Issue> stubIssueData = new HashMap<>();
-        stubIssueChecker = (JiraIssueChecker) stubIssueData::get;
-
         Issue openIssue = mock(Issue.class);
         Issue closedIssue = mock(Issue.class);
         when(openIssue.isOpen()).thenReturn(true);
         when(closedIssue.isOpen()).thenReturn(false);
 
-        for (int i = 1; i < 10; ++i) {
-            Issue issueToReturn = i % 2 == 0 ? closedIssue : openIssue;
-            stubIssueData.put(String.format("PROJ-%d", i * 111), issueToReturn);
-        }
+        stubIssueChecker = (JiraIssueChecker) issueId -> {
+            if (issueId.startsWith("OPEN")) {
+                return Optional.of(openIssue);
+            } else if (issueId.startsWith("CLOSED")) {
+                return Optional.of(closedIssue);
+            } else {
+                return Optional.empty();
+            }
+        };
     }
 
     @Test

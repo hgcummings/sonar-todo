@@ -10,7 +10,7 @@ public class MyClass {
      */
     public void mySecondMethod() {
         // Noncompliant@+1
-        //TODO:PROJ-222 Implement this
+        //TODO:CLOSED-222 Implement this
     }
 
     // Noncompliant@+1
@@ -19,12 +19,12 @@ public class MyClass {
      * Complete except for everything left todo.
      */
     public void myThirdMethod() {
-        //TODO:PROJ-333 Implement this
+        //TODO:OPEN-333 Implement this
     }
 
     // Noncompliant@+1
     /**
-     * TODO:PROJ-444 Implement this
+     * TODO:CLOSED-444 Implement this
      */
     public void myFourthMethod() {
         // Noncompliant@+1
@@ -32,10 +32,10 @@ public class MyClass {
     }
 
     /**
-     * TODO:PROJ-555 Implement this
+     * TODO:OPEN-555 Implement this
      */
     public void myFourthMethod() {
         // Noncompliant@+1
-        //TODO: Implement this under PROJ-777
+        //TODO: Implement this under OPEN-777
     }
 }

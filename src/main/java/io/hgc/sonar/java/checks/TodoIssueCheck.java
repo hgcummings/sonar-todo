@@ -1,6 +1,7 @@
 package io.hgc.sonar.java.checks;
 
 import com.google.common.collect.ImmutableList;
+import io.hgc.sonar.java.issues.Issue;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
@@ -10,6 +11,7 @@ import io.hgc.sonar.java.issues.DisconnectedJiraIssueChecker;
 import io.hgc.sonar.java.issues.IssueChecker;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,8 +55,11 @@ public class TodoIssueCheck extends IssuableSubscriptionVisitor {
             //TODO: Could be more clever here to get the precise line number within multi-line comments
             if (issueMatcher.find(todoMatcher.end()) && issueMatcher.start() == todoMatcher.end() + 1) {
                 String issueId = issueMatcher.group();
-                if (!issueChecker.lookupIssue(issueId).isOpen()) {
-                    addIssue(trivia.startLine(), "Found TODO associated closed issue " + issueId);
+                Optional<Issue> foundIssue = issueChecker.lookupIssue(issueId);
+                if (foundIssue.isPresent()) {
+                    if (!foundIssue.get().isOpen()) {
+                        addIssue(trivia.startLine(), "Found TODO associated closed issue " + issueId);
+                    }
                 }
             } else {
                 addIssue(trivia.startLine(), "Found TODO without associated issue");

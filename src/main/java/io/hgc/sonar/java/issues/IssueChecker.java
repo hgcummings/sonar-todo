@@ -1,9 +1,10 @@
 package io.hgc.sonar.java.issues;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public interface IssueChecker {
-    Issue lookupIssue(String issueId);
+    Optional<Issue> lookupIssue(String issueId);
 
     Pattern getIssueRegex();
 }
