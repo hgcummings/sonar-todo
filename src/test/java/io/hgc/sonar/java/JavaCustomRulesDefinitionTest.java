@@ -12,7 +12,7 @@ public class JavaCustomRulesDefinitionTest {
     JavaCustomRulesDefinition definition = new JavaCustomRulesDefinition();
     RulesDefinition.Context context = new RulesDefinition.Context();
     definition.define(context);
-    String repositoryKey = "java-custom-rules-todo-issues";
+    String repositoryKey = "java-custom-rule-todo-tracking";
     RulesDefinition.Repository repository = context.repository(repositoryKey);
 
     assertThat(repository.key()).isEqualTo(repositoryKey);

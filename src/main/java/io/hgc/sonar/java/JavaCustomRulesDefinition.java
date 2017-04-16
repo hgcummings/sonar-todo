@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class JavaCustomRulesDefinition implements RulesDefinition {
 
-  public static final String REPOSITORY_KEY = "java-custom-rules-todo-issues";
+  public static final String REPOSITORY_KEY = "java-custom-rule-todo-tracking";
 
   @Override
   public void define(Context context) {
