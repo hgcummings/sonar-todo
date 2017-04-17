@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public abstract class JiraWorkItemSource implements WorkItemSource {
     private static Pattern workItemRegex = Pattern.compile("[A-Z]+-[0-9]+");
 
+    @Override
     public Pattern getWorkItemRegex() {
         return workItemRegex;
     }
