@@ -5,6 +5,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
 
+/**
+ * Looks up work items in a JIRA instance, using anonymous authentication
+ *
+ * TODO:SONTO-5 Allow other authentication mechanisms
+ */
 class ConnectedJiraWorkItemSource extends JiraWorkItemSource {
     private final WebTarget webTarget;
 

@@ -7,6 +7,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import java.util.regex.Pattern;
 
+/**
+ * Identifies JIRA work items
+ */
 public abstract class JiraWorkItemSource implements WorkItemSource {
     private static Pattern workItemRegex = Pattern.compile("[A-Z]+-[0-9]+");
 
