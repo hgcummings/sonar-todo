@@ -20,7 +20,8 @@ class ConnectedJiraWorkItemSource extends JiraWorkItemSource {
     @Override
     public Optional<WorkItem> lookupWorkItem(String itemId) {
         Response response = webTarget
-                .path(String.format("/rest/api/2/issue/%s?fields=status", itemId))
+                .path(String.format("/rest/api/2/issue/%s", itemId))
+                .queryParam("fields", "status")
                 .request()
                 .get();
 
