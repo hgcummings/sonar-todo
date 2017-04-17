@@ -1,14 +1,15 @@
 package io.hgc.sonar.java.checks;
 
 import com.google.common.collect.ImmutableList;
+import io.hgc.sonar.java.tracking.JiraWorkItemSource;
 import io.hgc.sonar.java.tracking.WorkItem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
 import org.sonar.plugins.java.api.tree.SyntaxTrivia;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
-import io.hgc.sonar.java.tracking.DisconnectedJiraWorkItemChecker;
-import io.hgc.sonar.java.tracking.WorkItemChecker;
+import io.hgc.sonar.java.tracking.WorkItemSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,15 +27,19 @@ public class TodoTrackingCheck extends IssuableSubscriptionVisitor {
 
     private static final Pattern todoRegex = Pattern.compile("TO-?DO", Pattern.CASE_INSENSITIVE);
 
-    private WorkItemChecker workItemChecker;
+    private WorkItemSource workItemSource;
+
+    @RuleProperty(
+        description = "Work item source URL. This will be the URL of your project-tracking system (e.g. JIRA)."
+    )
+    protected String serverUrl;
 
     public TodoTrackingCheck() {
-        this(new DisconnectedJiraWorkItemChecker());
+        this.workItemSource = JiraWorkItemSource.create(serverUrl);
     }
 
-    //TODO: Work out how to initialise this within Sonar
-    public TodoTrackingCheck(WorkItemChecker workItemChecker) {
-        this.workItemChecker = workItemChecker;
+    public TodoTrackingCheck(WorkItemSource workItemSource) {
+        this.workItemSource = workItemSource;
     }
 
     @Override
@@ -50,14 +55,16 @@ public class TodoTrackingCheck extends IssuableSubscriptionVisitor {
         }
 
         Matcher todoMatcher = todoRegex.matcher(trivia.comment());
-        Matcher workItemMatcher = workItemChecker.getWorkItemRegex().matcher(trivia.comment());
+        Matcher workItemMatcher = workItemSource.getWorkItemRegex().matcher(trivia.comment());
         if (todoMatcher.find()) {
             //TODO: Could be more clever here to get the precise line number within multi-line comments
             if (workItemMatcher.find(todoMatcher.end()) && workItemMatcher.start() == todoMatcher.end() + 1) {
                 String workItemId = workItemMatcher.group();
-                Optional<WorkItem> foundWorkItem = workItemChecker.lookupWorkItem(workItemId);
+                Optional<WorkItem> foundWorkItem = workItemSource.lookupWorkItem(workItemId);
                 if (foundWorkItem.isPresent() && !foundWorkItem.get().isOpen()) {
-                    addIssue(trivia.startLine(), "Found TODO associated closed work item " + workItemId);
+                    addIssue(trivia.startLine(), "Found TODO associated with closed work item " + workItemId);
+                } else if (!foundWorkItem.isPresent()) {
+                    addIssue(trivia.startLine(), "Found TODO associated with missing work item " + workItemId);
                 }
             } else {
                 addIssue(trivia.startLine(), "Found TODO without associated work item");

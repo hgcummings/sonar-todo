@@ -19,7 +19,7 @@ public class JavaCustomRulesDefinition implements RulesDefinition {
   @Override
   public void define(Context context) {
     NewRepository repository = context.createRepository(REPOSITORY_KEY, "java"); // TODO, use Java.KEY
-    repository.setName("Java Custom Rules - TODO Issues");
+    repository.setName("Java Custom Rules - TODO Tracking");
 
     List<Class> checks = JavaCustomRulesList.getChecks();
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(checks, Class.class));

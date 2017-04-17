@@ -34,8 +34,13 @@ public class MyClass {
     /**
      * TODO:OPEN-555 Implement this
      */
-    public void myFourthMethod() {
+    public void myFifthMethod() {
         // Noncompliant@+1
-        //TODO: Implement this under OPEN-777
+        //TODO: Implement this under OPEN-555
+    }
+
+    public void mySixthMethod() {
+        // Noncompliant@+1
+        //TODO:MISSING-666
     }
 }

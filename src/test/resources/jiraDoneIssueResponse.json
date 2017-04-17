@@ -1,0 +1,22 @@
+{
+  "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+  "id": "10000",
+  "self": "http:\/\/projects.hgc.io\/rest\/api\/2\/issue\/10000",
+  "key": "OPS-1",
+  "fields": {
+    "status": {
+      "self": "http:\/\/projects.hgc.io\/rest\/api\/2\/status\/10001",
+      "description": "",
+      "iconUrl": "http:\/\/projects.hgc.io\/images\/icons\/status_generic.gif",
+      "name": "Done",
+      "id": "10001",
+      "statusCategory": {
+        "self": "http:\/\/projects.hgc.io\/rest\/api\/2\/statuscategory\/3",
+        "id": 3,
+        "key": "done",
+        "colorName": "green",
+        "name": "Done"
+      }
+    }
+  }
+}
