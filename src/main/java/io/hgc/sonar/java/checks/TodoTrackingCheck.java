@@ -62,12 +62,12 @@ public class TodoTrackingCheck extends IssuableSubscriptionVisitor {
                 String workItemId = workItemMatcher.group();
                 Optional<WorkItem> foundWorkItem = workItemSource.lookupWorkItem(workItemId);
                 if (foundWorkItem.isPresent() && !foundWorkItem.get().isOpen()) {
-                    addIssue(trivia.startLine(), "Found TODO associated with closed work item " + workItemId);
+                    addIssue(trivia.startLine(), "Complete this TODO, or associate it with an open work item " + workItemId);
                 } else if (!foundWorkItem.isPresent()) {
-                    addIssue(trivia.startLine(), "Found TODO associated with missing work item " + workItemId);
+                    addIssue(trivia.startLine(), "Associate this TODO with a valid work item " + workItemId);
                 }
             } else {
-                addIssue(trivia.startLine(), "Found TODO without associated work item");
+                addIssue(trivia.startLine(), "Associate this TODO with a work item");
             }
         }
     }
