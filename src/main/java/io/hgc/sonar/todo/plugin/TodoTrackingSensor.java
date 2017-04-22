@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import static io.hgc.sonar.todo.plugin.TodoTrackingRulesDefinition.*;
 
 /**
- * Sensor for finding TODOs not associated with appropriate tasks
+ * Sensor for checking whether TODOs are being tracked by corresponding tasks.
  */
 public class TodoTrackingSensor implements Sensor {
     private static final Pattern todoRegex = Pattern.compile("TO-?DO", Pattern.CASE_INSENSITIVE);
@@ -35,7 +35,9 @@ public class TodoTrackingSensor implements Sensor {
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-
+        descriptor
+            .name(TodoTrackingSensor.class.getSimpleName())
+            .createIssuesForRuleRepository(TodoTrackingRulesDefinition.REPOSITORY_KEY);
     }
 
     @Override
@@ -45,17 +47,20 @@ public class TodoTrackingSensor implements Sensor {
         FileSystem fs = context.fileSystem();
         for (InputFile file : context.fileSystem().inputFiles(fs.predicates().all())) {
             try {
-                LineIterator lines = IOUtils.lineIterator(file.inputStream(), file.charset().name());
-                int lineNumber = 1;
-
-                while (lines.hasNext()) {
-                    checkLine(context, file, lines.nextLine(), lineNumber);
-                    lineNumber += 1;
-                }
+                checkFile(context, file);
             } catch (IOException e) {
                 //TODO: Handle this properly
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void checkFile(SensorContext context, InputFile file) throws IOException {
+        LineIterator lines = IOUtils.lineIterator(file.inputStream(), file.charset().name());
+        int lineNumber = 1;
+
+        while (lines.hasNext()) {
+            checkLine(context, file, lines.nextLine(), lineNumber++);
         }
     }
 
@@ -66,25 +71,33 @@ public class TodoTrackingSensor implements Sensor {
         while (todoMatcher.find()) {
             if (taskMatcher.find(todoMatcher.end()) && taskMatcher.start() == todoMatcher.end() + 1) {
                 String taskId = taskMatcher.group();
-                Optional<Task> foundTask = taskSource.lookupTask(taskId);
                 NewIssueLocation location = new DefaultIssueLocation()
                         .on(file)
                         .at(file.newRange(lineNumber, todoMatcher.start(), lineNumber, taskMatcher.end()));
-                if (foundTask.isPresent()) {
-                    if (foundTask.get().isOpen()) {
-                        context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_OPEN_KEY)).at(location).save();
-                    } else {
-                        context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_CLOSED_KEY)).at(location).save();
-                    }
-                } else if (!foundTask.isPresent()) {
-                    context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_MISSING_KEY)).at(location).save();
-                }
+                addIssueForTodoWithTaskId(context, taskId, location);
             } else {
                 NewIssueLocation location = new DefaultIssueLocation()
                         .on(file)
                         .at(file.newRange(lineNumber, todoMatcher.start(), lineNumber, todoMatcher.end()));
-                context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_NOT_SPECIFIED_KEY)).at(location).save();
+                addIssueForTodoWithoutTaskId(context, location);
             }
         }
+    }
+
+    private void addIssueForTodoWithTaskId(SensorContext context, String taskId, NewIssueLocation location) {
+        Optional<Task> foundTask = taskSource.lookupTask(taskId);
+        if (foundTask.isPresent()) {
+            if (foundTask.get().isOpen()) {
+                context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_OPEN_KEY)).at(location).save();
+            } else {
+                context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_CLOSED_KEY)).at(location).save();
+            }
+        } else {
+            context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_MISSING_KEY)).at(location).save();
+        }
+    }
+
+    private void addIssueForTodoWithoutTaskId(SensorContext context, NewIssueLocation location) {
+        context.newIssue().forRule(RuleKey.of(REPOSITORY_KEY, TASK_NOT_SPECIFIED_KEY)).at(location).save();
     }
 }
