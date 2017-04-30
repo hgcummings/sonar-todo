@@ -87,6 +87,13 @@
       <version>9.4.3.v20170317</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.hgc</groupId>
+      <artifactId>jarspec</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>org.glassfish.jersey.core</groupId>
@@ -121,6 +128,17 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20</version>
+        <configuration>
+          <includes>
+            <include>**/*Spec.java</include>
+          </includes>
         </configuration>
       </plugin>
 

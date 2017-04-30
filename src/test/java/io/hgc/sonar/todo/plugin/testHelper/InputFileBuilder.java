@@ -26,7 +26,7 @@ public class InputFileBuilder {
         return new InputFileBuilder();
     }
 
-    public InputFileBuilder withText(String text) {
+    public InputFileBuilder containingText(String text) {
         this.text = text;
         return this;
     }
